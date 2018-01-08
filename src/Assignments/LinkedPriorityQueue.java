@@ -52,10 +52,13 @@ public class LinkedPriorityQueue implements PriorityQueue {
     public int size() {
         return list.length;
     }
+    public int queueSize(int i){
+        return list[i].size();
+    }
 
-    public boolean hadData() {
-        for (int i = 0; i < list.length; i++) {
-            if (list[i].size() > 0) {
+    public boolean hasData() {
+        for (int i = 0; i < size; i++) {
+            if (queueSize(i) > 0) {
                 return true;
             }
         }
