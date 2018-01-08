@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Assignments;
 
 /**
@@ -11,9 +7,10 @@ package Assignments;
  */
 public class ERScheduler extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ERScheduler
-     */
+   String condition, name;
+   int conditionnum;
+   LinkedPriorityQueue er = new LinkedPriorityQueue(3);
+   Patient p;
     public ERScheduler() {
         initComponents();
     }
@@ -28,35 +25,40 @@ public class ERScheduler extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtname = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
+        txtanswer = new javax.swing.JTextArea();
+        btnschedule = new javax.swing.JButton();
+        btntnext = new javax.swing.JButton();
+        btntall = new javax.swing.JButton();
+        rbf = new javax.swing.JRadioButton();
+        rbs = new javax.swing.JRadioButton();
+        rbc = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Patient Name:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtanswer.setColumns(20);
+        txtanswer.setRows(5);
+        jScrollPane1.setViewportView(txtanswer);
 
-        jButton1.setText("Schedule");
+        btnschedule.setText("Schedule");
+        btnschedule.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnscheduleActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Treat Next");
+        btntnext.setText("Treat Next");
 
-        jButton3.setText("Treat All");
+        btntall.setText("Treat All");
 
-        jRadioButton1.setText("Fair Condition");
+        rbf.setText("Fair Condition");
 
-        jRadioButton2.setText("Serious Condition");
+        rbs.setText("Serious Condition");
 
-        jRadioButton3.setText("Critical Condition");
+        rbc.setText("Critical Condition");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -67,18 +69,18 @@ public class ERScheduler extends javax.swing.JFrame {
                 .addContainerGap(80, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton3))
+                    .addComponent(rbf)
+                    .addComponent(rbs)
+                    .addComponent(rbc))
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(btntnext, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btntall, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnschedule, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -88,27 +90,49 @@ public class ERScheduler extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1))
                         .addGap(80, 80, 80))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(jRadioButton1))
+                            .addComponent(btnschedule)
+                            .addComponent(rbf))
                         .addGap(28, 28, 28)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jButton2))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rbs)
+                    .addComponent(btntnext))
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton3)
-                    .addComponent(jButton3))
+                    .addComponent(rbc)
+                    .addComponent(btntall))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnscheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnscheduleActionPerformed
+        if(rbc.isSelected()==true) {
+            condition="critical";
+            name=txtname.getText();
+            conditionnum=0;
+        }
+         if(rbs.isSelected()==true) {
+            condition="serious";
+            name=txtname.getText();
+            conditionnum=1;
+        }
+          if(rbf.isSelected()==true) {
+            condition="fair";
+            name=txtname.getText();
+            conditionnum=2;
+        }
+        p = new Patient(name, condition);
+        er.enqueue(p,conditionnum);
+        txtanswer.append("name: " +p.name() + "");
+        
+    }//GEN-LAST:event_btnscheduleActionPerformed
 
     /**
      * @param args the command line arguments
@@ -146,15 +170,15 @@ public class ERScheduler extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnschedule;
+    private javax.swing.JButton btntall;
+    private javax.swing.JButton btntnext;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JRadioButton rbc;
+    private javax.swing.JRadioButton rbf;
+    private javax.swing.JRadioButton rbs;
+    private javax.swing.JTextArea txtanswer;
+    private javax.swing.JTextField txtname;
     // End of variables declaration//GEN-END:variables
 }
